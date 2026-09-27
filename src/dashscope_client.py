@@ -2,9 +2,11 @@
 import json, os, time, urllib.request
 
 KEY = os.environ.get("DASHSCOPE_API_KEY")
-BASE = "https://ws-hqr7fpy8nvk4r1d3.cn-beijing.maas.aliyuncs.com/compatible-mode/v1"
-EMBED_MODEL = "qwen3.7-text-embedding"
-CHAT_MODEL = "qwen3.8-max-0902"
+# 默认走百炼公开 endpoint;买了专属工作空间的在环境变量里设 DASHSCOPE_BASE 覆盖
+BASE = os.environ.get("DASHSCOPE_BASE",
+                      "https://dashscope.aliyuncs.com/compatible-mode/v1")
+EMBED_MODEL = os.environ.get("DASHSCOPE_EMBED_MODEL", "qwen3.7-text-embedding")
+CHAT_MODEL = os.environ.get("DASHSCOPE_CHAT_MODEL", "qwen3.8-max-0902")
 
 
 def _post(path, payload, tries=4):
