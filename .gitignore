@@ -1,0 +1,67 @@
+# ============================================================
+# 个人隐私与本地数据 —— 绝不进版本库
+# 这个项目读你自己的简历、Cookie、投递记录,全是敏感信息。
+# 提交前若发现这里漏了一类,先补规则再 commit。
+# ============================================================
+
+# 登录凭证(北森 Cookie,按租户隔离)
+data/secrets/
+
+# SQLite 台账:含手机号、邮箱、投递记录、状态流转历史
+data/ledger.db
+data/ledger.db-journal
+data/ledger.db-wal
+data/ledger.db-shm
+
+# 简历与画像(含姓名、学校、电话、邮箱)
+data/resume*.json
+data/profile.json
+
+# 精排结果与缓存(含简历画像 + 每家公司 JD 原文)
+data/match_result*.json
+data/verdict_cache.json
+
+# 北森/Moka 采集原始数据(含你的投递记录、招聘方数据)
+data/beisen_raw.json
+data/moka_raw.json
+
+# 岗位池中间产物(几 MB 的 JSON,本地重跑即可再生成)
+data/ai_jobs.json
+data/shortlist.json
+data/pool_diff.json
+data/moka_sites_probe.json
+data/tenants_probe.json
+
+# 看板数据快照(由 store.py export 生成,含简历画像与统计)
+web/public/data.json
+
+# 日志
+data/*.log
+*.log
+
+# ============================================================
+# 根目录的个人报告 —— 是你自己的投递决策记录,不公开
+# ============================================================
+投递优先级.md
+投递台账.md
+简历改进建议.md
+*.pdf
+
+# ============================================================
+# 工具链
+# ============================================================
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 构建产物与缓存
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.web-ext-debug/
+web/node_modules/
+web/dist/

@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "北森投递自动填充(只填不交)",
+  "version": "0.1.0",
+  "description": "把本机 127.0.0.1:8000/api/profile 的表单答案灌进 zhiye.com 投递页。只填字段并标黄,提交永远由你自己点。",
+  "host_permissions": [
+    "https://*.zhiye.com/*",
+    "http://127.0.0.1:8000/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://*.zhiye.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ]
+}

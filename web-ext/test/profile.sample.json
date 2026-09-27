@@ -1,0 +1,124 @@
+{
+ "name": "测试者",
+ "gender": "男",
+ "birthday": "2000-01-01",
+ "phone": "13800000000",
+ "emergency_contact": "张三",
+ "emergency_phone": "13900000000",
+ "referral_code": null,
+ "email": "test@example.com",
+ "id_number": "110101200001011234",
+ "id_type": "身份证",
+ "nation": "汉族",
+ "politics": "共青团员",
+ "height": "175",
+ "weight": "55",
+ "native_province": "某省",
+ "native_city": "某市",
+ "native_county": "某县",
+ "hukou_nature": "农村",
+ "hukou_location": "某省某市某县",
+ "current_city": "某城市",
+ "target_city": "全国",
+ "school": "某某大学",
+ "college": "某某学院",
+ "degree": "本科",
+ "degree_type": "学士",
+ "study_mode": "全国普通高等院校全日制",
+ "major": "计算机科学与技术",
+ "edu_start": "2023-09",
+ "edu_end": "2027-06",
+ "is_fresh": "是",
+ "fresh_type": "应届",
+ "class_rank": "前5%",
+ "target_role": "AI 应用开发工程师",
+ "target_industry": null,
+ "job_type": "校园招聘",
+ "available_date": "2026-11",
+ "expected_salary": "9000-10000",
+ "github": null,
+ "portfolio": "https://example.com/portfolio",
+ "blog": null,
+ "hear_about": null,
+ "self_summary": "计算机相关专业 2027 届,主攻大模型应用开发。独立完成企业级 RAG 知识库系统,覆盖版面分析+OCR、文档切分、向量检索、工作流编排与 Prompt/Context Engineering。",
+ "tables": {
+  "edu": [
+   {
+    "start": "2023-09",
+    "end": "2027-06",
+    "school": "某某大学",
+    "college": "某某学院",
+    "major": "计算机科学与技术",
+    "degree": "本科",
+    "degree_type": "学士",
+    "study_mode": "全日制",
+    "gpa": null,
+    "duty": null
+   }
+  ],
+  "project": [
+   {
+    "name": "企业级RAG知识库系统",
+    "duty": "核心开发",
+    "start": "2026-07",
+    "end": "至今",
+    "result": null,
+    "desc": "针对企业长文档解析不稳定、大模型回答无法溯源的痛点,独立完成高性能问答系统的全流程改造与落地:复杂版式文档解析(版面分析+OCR)、「页码感知」分块与多路由检索链路与工作流编排、结构化输出把幻觉率从 22% 降至 7%、完成模型选型到 FastAPI+Vue3 全栈部署。"
+   }
+  ],
+  "intern": [
+   {
+    "name": null,
+    "org": null,
+    "duty": null,
+    "start": null,
+    "end": null,
+    "content": null,
+    "desc": null
+   }
+  ],
+  "practice": [
+   {
+    "name": "校园AI应用实践小组",
+    "desc": null,
+    "patent": null,
+    "honor": null,
+    "paper": null,
+    "contest": null
+   }
+  ],
+  "language": [
+   {
+    "type": null,
+    "level": null,
+    "listening": null,
+    "reading": null
+   }
+  ],
+  "cert": [
+   {
+    "kind": null,
+    "name": null,
+    "date": null
+   }
+  ],
+  "award": [
+   {
+    "name": "某竞赛省级三等奖",
+    "date": "2025",
+    "org": null,
+    "patent": null,
+    "paper": null,
+    "contest": null
+   },
+   {
+    "name": "某计算机设计大赛省级二等奖",
+    "date": "2025",
+    "org": null,
+    "patent": null,
+    "paper": null,
+    "contest": null
+   }
+  ]
+ }
+}

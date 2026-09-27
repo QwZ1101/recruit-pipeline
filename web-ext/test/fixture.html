@@ -1,0 +1,497 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>填充引擎测试夹具</title>
+  <link rel="stylesheet" href="../content.css">
+</head>
+<body>
+<h2>你正在投递职位: 智能体开发员(J34346)</h2>
+
+<!-- 尽量照北森那种 label + 控件 的行结构写,而不是用理想化的 <label for> -->
+<div class="form-row">
+  <span class="label">*姓名</span>
+  <div class="controls"><input type="text" id="name" placeholder="请输入"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">*性别</span>
+  <div class="controls">
+    <label><input type="radio" name="gender" value="男">男</label>
+    <label><input type="radio" name="gender" value="女">女</label>
+  </div>
+</div>
+
+<div class="form-row">
+  <span class="label">*证件号码</span>
+  <div class="controls">
+    <select id="idtype"><option>身份证</option><option>护照</option></select>
+    <input type="text" id="idno" placeholder="请输入">
+  </div>
+</div>
+
+<div class="form-row">
+  <span class="label">*手机号码</span>
+  <div class="controls"><input type="tel" id="mobile" value="13800000000"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">*邮箱</span>
+  <div class="controls"><input type="email" id="email" placeholder="请输入"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">*出生日期</span>
+  <!-- 北森的日期/下拉是 readonly input + 自定义弹层,不是原生 select -->
+  <div class="controls"><input type="text" id="birth" placeholder="请选择" readonly></div>
+</div>
+
+<!-- 省市区级联:看得见的是 readonly 显示框,同一行里藏着一个 display:none 的真 input。
+     这条**不是**级联用例(级联见下面的 *籍贯),它断言的是"同行隐藏真控件"那条写值兜底路线,
+     只能报 👀 —— 显示框不会跟着重渲染,页面看上去仍是「请选择」 -->
+<div class="form-item form-item--phoenix">
+  <div class="form-item__title"><label class="form-item__text">现居住地</label></div>
+  <div class="form-item__control">
+    <div class="phoenix-select">
+      <input class="phoenix-select__input" id="cityShow" placeholder="请选择" readonly>
+      <input class="phoenix-select__hidden" id="cityReal" type="text" style="display:none">
+    </div>
+  </div>
+</div>
+
+<div class="form-item form-item--phoenix">
+  <div class="form-item__title"><label class="form-item__text">*籍贯</label></div>
+  <div class="form-item__control"><div class="phoenix-cascader">
+    <input class="phoenix-cascader__input" id="native" placeholder="请选择" readonly>
+    <input class="phoenix-cascader__real" id="nativeReal" type="text" style="display:none">
+  </div></div>
+</div>
+
+<div class="form-row">
+  <span class="label">户口性质</span>
+  <div class="controls">
+    <select id="hukou"><option>请选择</option><option>城镇</option><option>农村</option></select>
+  </div>
+</div>
+
+<!-- 只有一个 readonly 显示框、行里没有第二个真 input 的弹层:必须停在 🔒,什么都不写 -->
+<div class="form-item">
+  <div class="form-item__title"><label class="form-item__text">民族</label></div>
+  <div class="form-item__control"><div class="phoenix-select">
+    <input type="text" id="nation" placeholder="请选择" readonly>
+  </div></div>
+</div>
+
+<!-- 整行没有一个 input、而且选项**不在 DOM 里**(它是个 div 假下拉,点开才渲染)。
+     这一条断言的是"一个节点都不点":它必须进 ❓,绝不能因为旁边有别的字段就乱点 -->
+<div class="form-item">
+  <div class="form-item__title"><label class="form-item__text">最高学历(div 假下拉)</label></div>
+  <div class="form-item__control"><div class="phoenix-select" id="divOnlyFake">
+    <span>请选择</span>
+  </div></div>
+</div>
+
+<!-- 假单选:整行没有一个 input/select/textarea,只能靠"点开选中" -->
+<div class="form-item">
+  <div class="form-item__title"><label class="form-item__text">政治面貌</label></div>
+  <div class="form-item__control"><div class="phoenix-radio">
+    <span class="phoenix-radio__label">中共党员</span>
+    <span class="phoenix-radio__label">共青团员</span>
+    <span class="phoenix-radio__label">群众</span>
+  </div></div>
+</div>
+
+<!-- 假控件但选项不在 DOM 里(要点开才渲染的假下拉):必须"一个节点都不点"并报出来 -->
+<div class="form-item">
+  <div class="form-item__title"><label class="form-item__text">应届/往届</label></div>
+  <div class="form-item__control"><div class="phoenix-select"><span>请选择</span></div></div>
+</div>
+
+<div class="form-title">教育经历</div>
+<!-- 北森真实结构(2026-09-25 探针实测):title 与 control 平级,真 input 距 .form-item **9 层**,
+     外面是 phoenix-unmodeled-layer 的 5 层壳。爬不够深就会静默漏掉整批下拉/日期字段 -->
+<div class="form-item form-item--phoenix">
+  <div class="form-item__title form-item__title--right"><label class="form-item__text">最高学位</label></div>
+  <div class="form-item__control"><div class="phoenix-unmodeled-layer__block">
+    <div class="phoenix-unmodeled-layer__inner"><div class="phoenix-unmodeled-layer__protect">
+      <div class="phoenix-unmodeled-layer__content"><div class="phoenix-unmodeled-layer__content-block">
+        <div class="phoenix-select"><div class="phoenix-select__wrapper">
+          <span class="phoenix-select__calcEle"></span>
+          <input class="phoenix-select__input" id="degree" placeholder="">
+        </div></div></div></div></div></div></div></div>
+</div>
+<div class="form-row">
+  <span class="label">*毕业学校</span>
+  <div class="controls"><input type="text" id="school2" placeholder="请输入"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">*身高(厘米)</span>
+  <div class="controls"><input type="text" id="height"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">*专业排名</span>
+  <div class="controls"><input type="text" id="rank"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">所学专业</span>
+  <div class="controls"><input type="text" id="major"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">毕业院校</span>
+  <div class="controls"><input type="text" id="school"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">*紧急联系电话</span>
+  <!-- 陷阱用例:它包含别名「联系电话」,不加长别名就会把申请人自己的号填进来 -->
+  <div class="controls"><input type="text" id="ecotel"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">紧急联系人</span>
+  <div class="controls"><input type="text" id="econame"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">短信验证码</span>
+  <div class="controls"><input type="text" id="otp" placeholder="请输入"></div>
+</div>
+
+<!-- 陷阱用例:上传框。它一度撞上裸别名「证件」→ 答案「身份证」,差点被当成假下拉去点。
+     现在 BLOCK 里有「照片」,别名表也没有裸「证件」——这一行必须整行消失在任何清单里 -->
+<div class="form-item">
+  <div class="form-item__title"><label class="form-item__text">证件照</label></div>
+  <div class="form-item__control"><div class="phoenix-upload">
+    <span class="phoenix-upload__text">身份证</span>
+    <span class="phoenix-upload__tip">点击上传</span>
+  </div></div>
+</div>
+
+<div class="form-row">
+  <span class="label">*期望月薪(税前)</span>
+  <div class="controls">
+    <select id="salary"><option>请选择</option><option>8000-12000</option><option>12000-15000</option></select>
+  </div>
+</div>
+
+<div class="form-row">
+  <span class="label">账号密码</span>
+  <div class="controls"><input type="password" id="pwd"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">个人作品集链接</span>
+  <div class="controls"><input type="text" id="demo"></div>
+</div>
+
+<div class="form-row">
+  <span class="label">自我评价</span>
+  <div class="controls"><textarea id="summary"></textarea></div>
+</div>
+
+<div class="form-row">
+  <span class="label">一个没答案的必填项</span>
+  <div class="controls"><input type="text" id="unknown"></div>
+</div>
+
+<!-- ── 子表用例:同一个列名在两个分区里都出现 ─────────────────────────────
+     「开始时间」在教育经历 = 2023-09、在项目经历 = 2026-07。
+     断言:两个框里填的必须是**各自分区**的值。以前这些标签整个留给 🚫,
+     就是因为没有分区概念 —— 写死一个别名会把教育经历的月份填进项目经历。 -->
+<div class="form-title">教育经历</div>
+<!-- 真实页(2026-09-26)这一格是 readonly + 「年份抬头 + 12 个月格」的月面板,
+     不是能直接打字框:引擎必须走 openMonth(翻年 → 点「9月」) -->
+<div class="form-row">
+  <span class="label">*开始时间</span>
+  <div class="controls"><div class="phoenix-select">
+    <input class="phoenix-select__input" type="text" id="eduStart" placeholder="请选择" readonly>
+  </div></div>
+</div>
+<div class="form-row">
+  <span class="label">*结束时间</span>
+  <div class="controls"><input type="text" id="eduEnd"></div>
+</div>
+<div class="form-row">
+  <span class="label">成绩(GPA)</span>
+  <div class="controls"><input type="text" id="eduGpa"></div>
+</div>
+
+<div class="form-title">项目经历</div>
+<div class="form-row">
+  <span class="label">*开始时间</span>
+  <div class="controls"><input type="text" id="prjStart"></div>
+</div>
+<!-- 「至今」不是弹层里的选项,是行内的勾选框:答案写「至今」时引擎要走 pickUntilNow -->
+<div class="form-row">
+  <span class="label">*结束时间</span>
+  <div class="controls">
+    <input type="text" id="prjEnd" placeholder="请选择" readonly>
+    <label class="until"><input type="checkbox" id="prjUntil"><span>至今</span></label>
+  </div>
+</div>
+<div class="form-row">
+  <span class="label">*项目名称</span>
+  <div class="controls"><input type="text" id="prjName"></div>
+</div>
+<div class="form-row">
+  <span class="label">项目成果</span>
+  <div class="controls"><input type="text" id="prjResult"></div>
+</div>
+
+<!-- 第三个分区:真实页叫「在校实践」,列名和项目/实习都不重叠。
+     断言:这一栏的列**不再出现在 🚫 里**,答案表里是 null 的进 ⚠️ -->
+<div class="form-title">在校实践</div>
+<div class="form-row">
+  <span class="label">实践名称</span>
+  <div class="controls"><input type="text" id="prName"></div>
+</div>
+<div class="form-row">
+  <span class="label">实践描述</span>
+  <div class="controls"><textarea id="prDesc"></textarea></div>
+</div>
+<div class="form-row">
+  <span class="label">专利成果</span>
+  <div class="controls"><input type="text" id="prPatent"></div>
+</div>
+<div class="form-row">
+  <span class="label">获得荣誉</span>
+  <div class="controls"><input type="text" id="prHonor"></div>
+</div>
+<div class="form-row">
+  <span class="label">论文/专著</span>
+  <div class="controls"><input type="text" id="prPaper"></div>
+</div>
+<div class="form-row">
+  <span class="label">参赛经历</span>
+  <div class="controls"><input type="text" id="prContest"></div>
+</div>
+
+<button type="submit" id="submitBtn">提交</button>
+<button type="button" id="otherBtn">下一步</button>
+
+<!-- 下面两个"假组件"是专门给弹层驱动当回归用例的:点显示框才渲染弹层,
+     只有点中选项才会改 state 和显示值 —— 往 input 里写值是无效的。
+     引擎必须走"点开→点等值选项→回读",否则这两项只会停在 🔒 -->
+<div class="form-item form-item--phoenix">
+  <div class="form-item__title"><label class="form-item__text">最高学历</label></div>
+  <div class="form-item__control"><div class="phoenix-select">
+    <input class="phoenix-select__input" id="eduShow" placeholder="请选择" readonly>
+  </div></div>
+</div>
+
+<div class="form-item form-item--phoenix">
+  <div class="form-item__title"><label class="form-item__text">生日</label></div>
+  <div class="form-item__control"><div class="phoenix-select">
+    <input class="phoenix-select__input" id="dateShow" placeholder="请选择" readonly>
+  </div></div>
+</div>
+
+<div class="phoenix-dropdown" id="eduPop" style="display:none">
+  <span>大专</span><span>本科</span><span>硕士</span>
+</div>
+<div class="phoenix-picker" id="datePop" style="display:none">
+  <span class="dp-nav">«</span><span class="dp-nav">‹</span>
+  <span class="dp-head">2004年 1月</span>
+  <span class="dp-nav">›</span><span class="dp-nav">»</span>
+  <div class="dp-grid"></div>
+</div>
+<!-- 级联弹层(2026-09-26 真实页形态):左边一列**单选圆圈 + 文字**的地区,
+     点圆圈只选中、**不会下钻**,点文字才进下一级;右边是「已选地区」的标签;
+     选完三级**必须点确定**才生效,而生效之后值落在**同行的另一个 input** 里
+     (显示框自己一直是空的 —— 回读只盯 el.value 就会误报"没填上") -->
+<div class="phoenix-region" id="nativePop" style="display:none">
+  <div class="rg-tabs"><span>全国</span></div>
+  <div class="rg-grid"></div>
+  <div class="rg-chosen"><span>已选地区</span><span class="rg-chips"></span></div>
+  <button type="button" class="cancel">取消</button>
+  <button type="button" class="confirm">确定</button>
+</div>
+
+<!-- 月面板:抬头只有年份(没有"月"),格子是 12 个月。照真实页把年份**多套一层壳**
+     (mp-title > mp-year),箭头是 mp-bar 的直接子节点 —— 只爬一层就找不到按钮 -->
+<div class="phoenix-picker" id="monthPop" style="display:none">
+  <div class="mp-bar">
+    <span class="mp-nav">«</span><div class="mp-title"><span class="mp-year">2026</span></div><span class="mp-nav">»</span>
+  </div>
+  <div class="mp-grid"></div>
+</div>
+
+<script>
+// 假下拉:点开才渲染,点选项才改值
+(() => {
+  const show = document.getElementById('eduShow'), pop = document.getElementById('eduPop')
+  show.addEventListener('click', () => { pop.style.display = pop.style.display === 'none' ? 'block' : 'none' })
+  pop.addEventListener('click', e => {
+    const t = (e.target.textContent || '').trim()
+    if (!t) return
+    show.value = t
+    pop.style.display = 'none'
+  })
+})();
+// 假日历:« » 翻年,‹ › 翻月,点日才写值
+// 那 31 个数字格是**第四轮回归事故的哨兵**:它们文字短、没后代,按"长得像按钮"筛全像候选,
+// 而点中任意一格都会把值写成 `${y}-${m}-${i}` —— 出生日期一不对,断言当场就红
+// (两个 IIFE 之间必须有分号:`})()` 后面紧跟 `(` 会被解析成"把上一个的返回值再调用一次")
+// 两个显示框共用这一块面板(*出生日期 和 生日),这样才测得出"同一弹层被连续开两次"
+// —— 真实页就是这个样子,而且第二个字段必须能重新点开、重新翻页
+(() => {
+  const triggers = [document.getElementById('dateShow'), document.getElementById('birth')]
+  const pop = document.getElementById('datePop')
+  const head = pop.querySelector('.dp-head'), grid = pop.querySelector('.dp-grid')
+  let y = 2004, m = 1, cur = triggers[0]
+  const pad = n => String(n).padStart(2, '0')
+  const draw = () => {
+    head.textContent = `${y}年 ${m}月`
+    grid.innerHTML = ''
+    for (let i = 1; i <= 31; i++) {
+      const s = document.createElement('span')
+      s.textContent = String(i)
+      s.addEventListener('click', () => {
+        cur.value = `${y}-${pad(m)}-${pad(i)}`
+        pop.style.display = 'none'
+      })
+      grid.appendChild(s)
+    }
+  }
+  triggers.forEach(t => t.addEventListener('click', () => {
+    cur = t
+    pop.style.display = pop.style.display === 'none' ? 'block' : 'none'
+    draw()
+  }))
+  pop.querySelectorAll('.dp-nav').forEach(n => n.addEventListener('click', () => {
+    const ch = n.textContent.trim()
+    if (ch === '«') y--; else if (ch === '»') y++
+    else if (ch === '‹') { m--; if (m < 1) { m = 12; y-- } }
+    else { m++; if (m > 12) { m = 1; y++ } }
+    draw()
+  }))
+  window.__dateSimReady = true
+})();
+// 地区树级联(照 2026-09-26 真实页):一列「圆圈 + 文字」,点**文字**才下钻,
+// 点圆圈只是选中(引擎要是点到圆圈就永远进不到下一级);三级点完再点「确定」才生效,
+// 生效后值写进**同行的另一个 input**(#nativeReal),显示框 #native 保持空 ——
+// 回读只盯 el.value 就会误报"没填上",这条是那个 bug 的回归用例
+(() => {
+  const show = document.getElementById('native'), real = document.getElementById('nativeReal')
+  const pop = document.getElementById('nativePop'), grid = pop.querySelector('.rg-grid')
+  const chips = pop.querySelector('.rg-chips')
+  const TREE = {
+    '示例省': { '示例市': ['示例县A', '示例县B'], '另一市': ['示例县C', '示例区'] },
+    '北京市': { '北京市': ['朝阳区', '海淀区'] },
+    '河北省': { '石家庄市': ['正定县'] }
+  }
+  let path = [], picked = null
+  const rowHtml = (n, drill) => '<label class="rg-opt"><span class="rg-radio"></span>' +
+    '<span class="rg-nm">' + n + '</span>' + (drill ? '<span class="rg-arrow">›</span>' : '') + '</label>'
+  const draw = (names, drill) => { grid.innerHTML = names.map(n => rowHtml(n, drill)).join('') }
+  show.addEventListener('click', () => {
+    const open = pop.style.display !== 'none'
+    pop.style.display = open ? 'none' : 'block'
+    if (open) return
+    path = []; picked = null; chips.innerHTML = ''
+    draw(Object.keys(TREE), true)
+  })
+  pop.addEventListener('click', e => {
+    const el = e.target
+    if (el.closest('.confirm')) { real.value = picked || ''; pop.style.display = 'none'; return }
+    if (el.closest('.cancel')) { pop.style.display = 'none'; return }
+    const opt = el.closest('.rg-opt')
+    if (!opt) return
+    const nm = opt.querySelector('.rg-nm').textContent
+    // 圆圈:只把名字挂到「已选地区」,列表**不动** —— 点它等于白点
+    if (el.closest('.rg-radio')) {
+      chips.innerHTML = '<span class="chip">' + nm + '</span>'
+      return
+    }
+    if (!path.length && TREE[nm]) { path = [nm]; draw(Object.keys(TREE[nm]), true); return }
+    if (path.length === 1 && TREE[path[0]][nm]) {
+      path = [path[0], nm]
+      draw(TREE[path[0]][nm], false)
+      return
+    }
+    if (path.length === 2) {
+      path = [path[0], path[1], nm]
+      picked = nm
+      chips.innerHTML = '<span class="chip">' + nm + '</span>'
+    }
+  })
+  window.__cascaderSimReady = true
+})();
+// 月面板(*开始时间 2023-09 用它):抬头只有年份,格子是 12 个月,« » 翻年。
+// 年份外面**多套一层壳**(mp-title > mp-year),箭头是那一行的兄弟 —— 引擎现在不爬层,
+// 改成"扫整块面板,只留和抬头在同一条横带上的小节点",所以壳套几层都不影响。
+// 末尾那个 &nbsp; 空白补位格是陷阱:它最像"没文字的按钮",但它在抬头下面 → 横带筛不进候选;
+// 万一哪天筛漏了,点中它会把值写成 PUNCHED-BLANK,断言当场就能看出来
+(() => {
+  const show = document.getElementById('eduStart'), pop = document.getElementById('monthPop')
+  const year = pop.querySelector('.mp-year'), grid = pop.querySelector('.mp-grid')
+  let y = 2026
+  const pad = n => String(n).padStart(2, '0')
+  const draw = () => {
+    year.textContent = String(y)
+    grid.innerHTML = ''
+    for (let m = 1; m <= 12; m++) {
+      const s = document.createElement('span')
+      s.className = 'mp-cell'
+      s.textContent = m + '月'
+      s.addEventListener('click', () => {
+        show.value = `${y}-${pad(m)}`
+        pop.style.display = 'none'
+      })
+      grid.appendChild(s)
+    }
+    const blank = document.createElement('span')
+    blank.className = 'mp-cell'
+    blank.innerHTML = '&nbsp;'
+    blank.addEventListener('click', () => { show.value = 'PUNCHED-BLANK' })
+    grid.appendChild(blank)
+  }
+  show.addEventListener('click', () => {
+    const open = pop.style.display !== 'none'
+    pop.style.display = open ? 'none' : 'block'
+    if (!open) draw()
+  })
+  pop.querySelectorAll('.mp-nav').forEach(n => n.addEventListener('click', () => {
+    y += n.textContent.trim() === '«' ? -1 : 1
+    draw()
+  }))
+  window.__monthSimReady = true
+})();
+// 「至今」勾选框:勾上才把结束时间写成 至今 并锁掉输入框
+(() => {
+  const box = document.getElementById('prjUntil'), show = document.getElementById('prjEnd')
+  box.addEventListener('change', () => {
+    show.value = box.checked ? '至今' : ''
+    show.disabled = box.checked
+  })
+  window.__untilNowSimReady = true
+})();
+</script>
+
+<script>
+// 哨兵:任何对提交/下一步按钮的点击都会被记下来,测试用来自证扩展没碰过按钮
+window.__clicked = []
+// 再记一笔"点到了哪个节点",这样放开假控件点击后能审计它到底点了什么
+document.addEventListener('click', e => {
+  const t = (e.target.textContent || '').trim()
+  window.__clicked.push(e.target.closest('button') ? 'button:' + t : 'node:' + t)
+}, true)
+</script>
+<script>
+// 测试用的答案表从 profile.sample.json 取(**脱敏样本**,和 data/profile.json 同形状、
+// 但没有真实证件号/手机号)。这样加字段不用回来改这里一大坨字面量。
+// 跑法:cd web-ext && python -m http.server 8899 --bind 127.0.0.1
+//      控制台 await window.__runTest()
+window.__runTest = async () => {
+  const p = await (await fetch('profile.sample.json', { cache: 'no-store' })).json()
+  window.__r = null
+  window.__t0 = Date.now()
+  window.__autofill.fillAll(p).then(r => { window.__r = r; window.__ms = Date.now() - window.__t0 })
+  return 'started(跑完看 window.__r / window.__ms)'
+}
+</script>
+<script src="../content.js?v=15"></script>
+</body>
+</html>

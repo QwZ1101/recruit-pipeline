@@ -1,0 +1,14 @@
+# 后端/脚本依赖。前端依赖在 web/package.json,两边互不包含。
+# 装法(项目根目录,先激活虚拟环境):
+#   python -m pip install -r requirements.txt
+
+# PDF 抽文本,src/parse_resume.py 用
+PyMuPDF==1.28.2
+
+# 看板后端 src/api.py:HTTP 层 + ASGI 服务器。只绑 127.0.0.1,不部署公网。
+fastapi==0.141.1
+uvicorn==0.53.0
+
+# 其余全是标准库:sqlite3(台账)、urllib(调 DashScope 与北森接口)、
+# json/glob/argparse/datetime/re。所以这个文件看着短,是故意的——
+# 别用 requests,也别往里塞用不到的包。
